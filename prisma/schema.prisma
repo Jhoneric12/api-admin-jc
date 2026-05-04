@@ -1,0 +1,36 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Credentials {
+  id           Int      @id @default(autoincrement())
+  accountId    String   @unique @default(uuid())
+  email        String   @unique
+  password     String
+  dateCreated  DateTime @default(now())
+  dateUpdated  DateTime @updatedAt
+
+  admin        Admin?
+}
+
+model Admin {
+  id            Int      @id @default(autoincrement())
+  adminId       String   @unique @default(uuid())
+
+  accountId     String   @unique
+  firstName     String
+  lastName      String
+  birthdate     DateTime @db.Date
+  mobileNumber  String
+  gender        String
+  dateCreated   DateTime @default(now())
+  dateUpdated   DateTime @updatedAt
+
+  credentials   Credentials @relation(fields: [accountId], references: [accountId])
+}
