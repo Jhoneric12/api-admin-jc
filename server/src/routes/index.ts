@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // V1 ROUTES
-import AuthRoutes from "./v1/auth.route";
+import AuthRoutes from "./v1/auth/auth.route";
 
 export const routes = Router();
 

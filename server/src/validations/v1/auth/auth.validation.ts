@@ -1,14 +1,12 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  // Credentials fields
-  email: z.string().email("Invalid email address"),
+  email: z.email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
     .max(72, "Password must be at most 72 characters"),
 
-  // Admin fields
   firstName: z.string().min(1, "First name is required").max(100),
   lastName: z.string().min(1, "Last name is required").max(100),
   birthdate: z
@@ -22,7 +20,7 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email({ message: "Invalid email address" }),
   password: z.string().min(1, "Password is required"),
 });
 

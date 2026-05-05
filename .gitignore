@@ -40,3 +40,4 @@ server/prisma/dev.db-journal
 .idea/
 
 /generated
+server/config/auth-keys

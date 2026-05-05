@@ -1,31 +1,34 @@
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { prisma } from "../../config/prisma.js";
+import { ExtractJwt, Strategy as JwtStrategy, type StrategyOptionsWithoutRequest } from "passport-jwt";
 import { env } from "../../config/env.js";
+import { prisma } from "../../config/prisma.js";
 
 export const configurePassport = () => {
-  const options = {
+  const options: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: env.JWT_SECRET,
+    secretOrKey: env.JWT_PUBLIC_KEY,
   };
 
   passport.use(
-    new JwtStrategy(options, async (jwtPayload, done) => {
-      const { uid, exp } = jwtPayload;
-      try {
-        const user = await prisma.admin.findUnique({
-          where: { id: uid },
-          select: { id: true, email: true },
-        });
+    new JwtStrategy(
+      options,
+      async (jwtPayload: { uid: string; exp: number }, done: (err: unknown, user: unknown, info?: unknown) => void) => {
+        const { uid } = jwtPayload;
+        try {
+          const user = await prisma.admin.findUnique({
+            where: { adminId: uid },
+            select: { adminId: true },
+          });
 
-        if (!user) return done(null, false);
+          if (!user) return done(null, false);
 
-        return done(null, user);
-      } catch (err) {
-        return done(err, false);
-      }
-    }),
+          return done(null, user);
+        } catch (err) {
+          return done(err, false);
+        }
+      },
+    ),
   );
 };
 
