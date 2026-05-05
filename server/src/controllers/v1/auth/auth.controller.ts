@@ -69,10 +69,11 @@ class AuthController {
       const userResponse = {
         accountId: user?.accountId,
         email: user.email,
-        firstName: user.admin?.firstName || null,
-        birthdate: user.admin?.birthdate || null,
-        mobileNumber: user.admin?.mobileNumber || null,
-        gender: user.admin?.gender || null,
+        firstName: user.admin?.firstName,
+        lastName: user.admin?.lastName,
+        birthdate: user.admin?.birthdate,
+        mobileNumber: user.admin?.mobileNumber,
+        gender: user.admin?.gender,
       };
 
       const token = jwt.sign({ uid: userResponse?.accountId }, env.JWT_PRIVATE_KEY, {
