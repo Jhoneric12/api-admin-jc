@@ -19,6 +19,10 @@ const DATABASE_HOST = process.env.DATABASE_HOST ?? "";
 
 const JWT_PRIVATE_KEY_PATH = process.env.JWT_PRIVATE_KEY_PATH ?? "";
 const JWT_PUBLIC_KEY_PATH = process.env.JWT_PUBLIC_KEY_PATH ?? "";
+const JWT_ISSUER = process.env.JWT_ISSUER;
+const JWT_AUDIENCE = process.env.JWT_AUDIENCE;
+const JWT_ALGORITHM = process.env.JWT_ALGORITHM;
+const JWT_EXPIRY = process.env.JWT_EXPIRY;
 
 if (!DATABSE_URL) {
   // eslint-disable-next-line no-console
@@ -46,4 +50,8 @@ export const env = {
   JWT_PUBLIC_KEY_PATH,
   JWT_PRIVATE_KEY,
   JWT_PUBLIC_KEY,
+  JWT_AUDIENCE,
+  JWT_ISSUER,
+  JWT_EXPIRY,
+  JWT_ALGORITHM,
 };

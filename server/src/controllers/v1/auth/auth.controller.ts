@@ -1,11 +1,11 @@
-import type { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import { hashPassword, comparePassword } from "../../../utils/bcrypt.js";
-import { prisma } from "../../../../config/prisma.js";
+import type { NextFunction, Request, Response } from "express";
+import jwt, { Algorithm, SignOptions } from "jsonwebtoken";
 import { env } from "../../../../config/env.js";
-import { LoginInput, RegisterInput } from "../../../validations/v1/auth/auth.validation.js";
+import { prisma } from "../../../../config/prisma.js";
 import { APIError } from "../../../utils/app-error.js";
+import { comparePassword, hashPassword } from "../../../utils/bcrypt.js";
 import { sendSuccess } from "../../../utils/response.js";
+import { LoginInput, RegisterInput } from "../../../validations/v1/auth/auth.validation.js";
 
 class AuthController {
   register = async (req: Request, res: Response, next: NextFunction) => {
@@ -76,11 +76,15 @@ class AuthController {
         gender: user.admin?.gender,
       };
 
-      const token = jwt.sign({ uid: userResponse?.accountId }, env.JWT_PRIVATE_KEY, {
-        algorithm: "RS256",
-        expiresIn: "1d",
-      });
-      sendSuccess({ res, data: { user: userResponse, token }, message: "Login successful." });
+      const jwtOptions: SignOptions = {
+        issuer: env.JWT_ISSUER ?? "",
+        audience: env.JWT_AUDIENCE ?? "",
+        algorithm: env.JWT_ALGORITHM as Algorithm,
+        expiresIn: env.JWT_EXPIRY as SignOptions["expiresIn"],
+      };
+
+      const token = jwt.sign({ uid: userResponse?.accountId }, env.JWT_PRIVATE_KEY, jwtOptions);
+      sendSuccess({ res, data: { user: userResponse, token }, message: "Login successful" });
     } catch (err) {
       next(err);
     }
