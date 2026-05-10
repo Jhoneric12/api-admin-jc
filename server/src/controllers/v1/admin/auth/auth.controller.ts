@@ -54,7 +54,7 @@ class AuthController {
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, password } = req.body as LoginInput;
+      const { email, password } = req.body as LoginInput["body"];
 
       const user = await prisma.credentials.findUnique({ where: { email }, include: { admin: true } });
 
