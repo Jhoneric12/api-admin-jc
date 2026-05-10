@@ -11,6 +11,6 @@ server.listen(env.PORT, () => {
     const host = addressInfo.address === "::" ? "localhost" : addressInfo.address;
     const port = addressInfo.port;
 
-    console.log(`🚀 Server ready at ${host}:${port}`);
+    console.log(`🚀 Server ready at http://${host}:${port}`);
   }
 });
