@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt, { Algorithm, SignOptions } from "jsonwebtoken";
-import { env } from "../../../../config/env.js";
-import { prisma } from "../../../../config/prisma.js";
-import { APIError } from "../../../utils/app-error.js";
-import { comparePassword, hashPassword } from "../../../utils/bcrypt.js";
-import { sendSuccess } from "../../../utils/response.js";
-import { LoginInput, RegisterInput } from "../../../validations/v1/auth/auth.validation.js";
+import { env } from "../../../../../config/env";
+import { prisma } from "../../../../../config/prisma";
+import { APIError } from "../../../../utils/app-error";
+import { comparePassword, hashPassword } from "../../../../utils/bcrypt";
+import { sendSuccess } from "../../../../utils/response";
+import { LoginInput, RegisterInput } from "../../../../validations/v1/admin/auth/auth.validation";
 
 class AuthController {
   register = async (req: Request, res: Response, next: NextFunction) => {

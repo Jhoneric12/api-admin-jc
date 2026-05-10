@@ -2,9 +2,9 @@ import type { Request, Response, NextFunction } from "express";
 import { ZodType } from "zod";
 
 export const validate =
-  (schema: ZodType) =>
+  (schema: ZodType<any>) =>
   (req: Request, res: Response, next: NextFunction): void => {
-    const result = schema.safeParse(req.body);
+    const result = schema.safeParse({ body: req.body, params: req.params, query: req.query });
     if (!result.success) {
       res.status(422).json({
         message: "Validation failed",
@@ -15,6 +15,12 @@ export const validate =
       });
       return;
     }
-    req.body = result.data;
+    req.body = result.data.body;
+    if (result.data.params) {
+      req.params = result.data.params;
+    }
+    if (result.data.query) {
+      req.query = result.data.query;
+    }
     next();
   };
