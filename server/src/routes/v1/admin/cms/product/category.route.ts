@@ -7,6 +7,7 @@ import {
 } from "../../../../../validations/v1/admin/cms/product/category.validation";
 import { validate } from "../../../../../middlewares/validate";
 import { authenticate } from "../../../../../middlewares/passport.config";
+import path from "path";
 
 const router = Router();
 

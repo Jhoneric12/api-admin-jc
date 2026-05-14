@@ -41,6 +41,7 @@ model Product {
   code         String   @unique
   name         String
   description  String?
+  imageSrc     String?
   categoryId   String
   isActive     Boolean  @default(true)
 
@@ -64,6 +65,7 @@ model Category {
   id           Int        @id @default(autoincrement())
   categoryId   String     @unique @default(uuid())
   name         String
+  imageSrc     String?
 
   products     Product[]
 

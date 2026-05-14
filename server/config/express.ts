@@ -1,5 +1,6 @@
 import express from "express";
 import passport from "passport";
+import path from "path";
 import { routes } from "../src/routes/index.js";
 import { errorHandler } from "../src/middlewares/error-handler.js";
 import { configurePassport } from "../src/middlewares/passport.config.js";
@@ -64,6 +65,8 @@ app.set("json spaces", 2);
 app.set("case sensitive routing", false);
 app.set("strict routing", true);
 app.set("x-powered-by", false);
+
+app.use("/public", express.static(path.resolve("public")));
 
 app.use("/api", routes);
 
