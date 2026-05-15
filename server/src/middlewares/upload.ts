@@ -28,7 +28,7 @@ export const upload = (options: UploadOptions = {}) => {
       const rawPath =
         typeof options.filePath === "function" ? options.filePath(req, file) : (options.filePath ?? "public/uploads");
 
-      const uploadDir = path.resolve(rawPath);
+      const uploadDir = path.join("public", rawPath);
 
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
