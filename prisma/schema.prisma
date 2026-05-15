@@ -38,7 +38,7 @@ model Admin {
 model Product {
   id           Int      @id @default(autoincrement())
   productId    String   @unique @default(uuid())
-  code         String   @unique
+  prefix       String   @unique
   name         String
   description  String?
   imageSrc     String?
@@ -59,14 +59,15 @@ model Unit {
   abbreviation  String  // ml, pc, box
 
   variants      ProductVariant[]
+
+  dateCreated   DateTime @default(now())
+  dateUpdated   DateTime @updatedAt 
 }
 
 model Category {
   id           Int        @id @default(autoincrement())
   categoryId   String     @unique @default(uuid())
   name         String
-  imageSrc     String?
-
   products     Product[]
 
   dateCreated  DateTime   @default(now())

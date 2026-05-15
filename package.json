@@ -9,6 +9,7 @@
     "start": "node server/dist/config/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:reset": "prisma migrate reset dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "tsx server/src/scripts/scaffolding.ts"
   },

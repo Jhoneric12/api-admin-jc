@@ -22,6 +22,17 @@ export const deleteCategorySchema = z.object({
   }),
 });
 
+export const getCategoriesSchema = z.object({
+  query: z.object({
+    page: z.coerce.number().int().min(1).default(1),
+
+    limit: z.coerce.number().int().min(1).max(100).default(10),
+
+    search: z.string().optional(),
+  }),
+});
+
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
 export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
 export type DeleteCategoryInput = z.infer<typeof deleteCategorySchema>;
+export type GetCategoriesInput = z.infer<typeof getCategoriesSchema>;

@@ -5,18 +5,36 @@ import { sendSuccess } from "../../../../../utils/response.js";
 import {
   CreateCategoryInput,
   DeleteCategoryInput,
+  GetCategoriesInput,
   UpdateCategoryInput,
 } from "../../../../../validations/v1/admin/cms/product/category.validation";
 
 class CategoryController {
-  getCategories = async (_req: Request, res: Response, next: NextFunction) => {
+  getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const categories = await prisma.category.findMany({
-        select: { categoryId: true, name: true, dateCreated: true, dateUpdated: true },
-        orderBy: { dateCreated: "desc" },
-      });
+      const { page, limit, search } = req.query as unknown as GetCategoriesInput["query"];
 
-      sendSuccess({ res, data: categories, message: "Categories retrieved successfully." });
+      const where = search ? { name: { contains: search } } : {};
+
+      const [total, categories] = await Promise.all([
+        prisma.category.count({ where }),
+        prisma.category.findMany({
+          where,
+          select: { categoryId: true, name: true, dateCreated: true, dateUpdated: true },
+          orderBy: { dateCreated: "desc" },
+          skip: (page - 1) * limit,
+          take: Number(limit),
+        }),
+      ]);
+
+      sendSuccess({
+        res,
+        data: {
+          items: categories,
+          pagination: { total, page: Number(page), limit: Number(limit), totalPages: Math.ceil(total / limit) },
+        },
+        message: "Categories retrieved successfully.",
+      });
     } catch (err) {
       next(err);
     }
